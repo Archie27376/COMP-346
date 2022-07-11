@@ -1,4 +1,4 @@
-// package comp346pa1w2020;
+package comp346pa1s2020;
 
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -113,7 +113,7 @@ public class Client extends Thread{
         
         try
         {
-        	inputStream = new Scanner(new FileInputStream("transaction.txt"));
+        	inputStream = new Scanner(new FileInputStream("src/transaction.txt"));
         }
         catch(FileNotFoundException e)
         {
@@ -157,9 +157,10 @@ public class Client extends Thread{
          int i = 0;     /* index of transaction array */
          
          while (i < getNumberOfTransactions())
-         {   /*Alternatively, busy-wait until the network input buffer is available */
-            while( objNetwork.getInBufferStatus().equals("full")){
-                Thread.yield();
+         {  
+        	 /* Alternatively, busy-wait until the network input buffer is available */
+            while( objNetwork.getInBufferStatus().equals("full") ) {
+            	Thread.yield();
             }
                                              	
             transaction[i].setTransactionStatus("sent");   /* Set current transaction status */
@@ -184,13 +185,14 @@ public class Client extends Thread{
          
          while (i < getNumberOfTransactions())
          {     
-        	 while( objNetwork.getOutBufferStatus().equals("empty")){  	/* Alternatively, busy-wait until the network output buffer is available */
-        	     Thread.yield();
-        	 }
+        	/* Alternatively, busy-wait until the network output buffer is available */
+        	while( objNetwork.getOutBufferStatus().equals("empty")) {
+        		Thread.yield();
+        	}
                                                                         	
             objNetwork.receive(transact);                               	/* Receive updated transaction from the network buffer */
             
-           // System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber());
+            //System.out.println("\n DEBUG : Client.receiveTransactions() - receiving updated transaction on account " + transact.getAccountNumber());
             
             System.out.println(transact);                               	/* Display updated transaction */    
             i++;
@@ -219,9 +221,7 @@ public class Client extends Thread{
     	long sendClientStartTime, sendClientEndTime, receiveClientStartTime, receiveClientEndTime;
     
 	/* Implement the code for the run method */
-
-        /* Implement the thread for sending */
-        if(getClientOperation().equals("sending")){
+    	if(getClientOperation().equals("sending")){
             sendClientStartTime = System.currentTimeMillis();
             sendTransactions();
             sendClientEndTime = System.currentTimeMillis();
@@ -239,6 +239,5 @@ public class Client extends Thread{
         else{
             System.exit(0);
         }
-
     }
 }
